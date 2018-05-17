@@ -11,20 +11,19 @@ Paddle::Paddle(float x, float y, sf::Color colour) {
     shape->setFillColor(colour);
 }
 
-void Paddle::move(Direction dir, float delta, float width, float height) {
+void Paddle::move(utils::Direction dir, float delta, float width, float height) {
     float moveSpeed = speed * delta;
 
-    if (dir == UP) {
+    if (dir == utils::Direction::UP) {
         float newY = y - moveSpeed;
         y = newY;
     }
 
-    if (dir == DOWN) {
+    if (dir == utils::Direction::DOWN) {
         float newY = y + moveSpeed;
         y = newY;
     }
 }
-
 
 void Paddle::update() {
     shape->setPosition(x,y);

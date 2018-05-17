@@ -1,5 +1,7 @@
-#include "world.hpp"
 #include <bits/stdc++.h>
+#include <iostream>
+#include "world.hpp"
+#include "utils.hpp"
 #include "SFML/Graphics.hpp"
 
 World::World(sf::RenderWindow* win) {
@@ -8,14 +10,11 @@ World::World(sf::RenderWindow* win) {
     this->pad1 = new Paddle(20,20,sf::Color::Green);
     this->pad2 = new Paddle(win->getSize().x-40,20,sf::Color::Red);
     this->ball = new Ball(100,100,sf::Color::Blue);
-
     render();
 }
 
 void World::render() {
     while (win->isOpen()) {
-        
-
         //get time in microseconds then convert to milliseconds
         sf::Int32 deltaInt = deltaClock->restart().asMicroseconds();
         float delta = (float)deltaInt / 1000;
@@ -31,28 +30,22 @@ void World::render() {
         }
 
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-            pad1->move(Paddle::Direction::UP, delta, win->getSize().x, win->getSize().y);
+            pad1->move(utils::UP, delta, win->getSize().x, win->getSize().y);
         }
 
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-            pad1->move(Paddle::Direction::DOWN, delta, win->getSize().x, win->getSize().y);
+            pad1->move(utils::DOWN, delta, win->getSize().x, win->getSize().y);
         }
 
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-            pad2->move(Paddle::Direction::UP, delta, win->getSize().x, win->getSize().y);
+            pad2->move(utils::UP, delta, win->getSize().x, win->getSize().y);
         }
 
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-            pad2->move(Paddle::Direction::DOWN, delta, win->getSize().x, win->getSize().y);
+            pad2->move(utils::DOWN, delta, win->getSize().x, win->getSize().y);
         }
 
-        if (checkCollisions(ball->getShape(),pad2->getShape())) {
-            ball->bounce();
-        }
-
-        //if (checkCollisions(ball->getShape(),pad1->getShape())) {
-        //    ball->bounce();
-        //}
+        checkCollisions();
 
         win->clear();
         win->draw(pad1->getShape());
@@ -66,17 +59,24 @@ void World::render() {
 
 void World::close() {
     delete this;
-    
 }
 
-bool World::checkCollisions(sf::CircleShape circle, sf::RectangleShape rect) {
-    sf::Vector2f circlePos = circle.getPosition();
-    sf::Vector2f rectPos = rect.getPosition();
-    float rectWidth = rect.getSize().x;
-    float rectHeight = rect.getSize().y;
-    float circleRadius = circle.getRadius();
+void World::checkCollisions() {
+    sf::RectangleShape circle = ball->getShape();
+    sf::RectangleShape p1Rect = pad1->getShape();
+    sf::RectangleShape p2Rect = pad2->getShape();
+  
+    if(p1Rect.getGlobalBounds().intersects(circle.getGlobalBounds())) {
+        if (circle.getPosition().y > p1Rect.getGlobalBounds().top)
+            ball->bounce(utils::UP);
+        else
+            ball->bounce(utils::RIGHT);
+    }
 
-    return circlePos.x + circleRadius * 2 > rectPos.x;
+    if(p2Rect.getGlobalBounds().intersects(circle.getGlobalBounds())) {
+        ball->bounce(utils::LEFT);
+    }
+
 }
 
 float World::clip(float number, float lowest, float highest) {
