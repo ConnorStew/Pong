@@ -7,7 +7,7 @@
 
 class Paddle {
     public:
-    Paddle(float x, float y, sf::Color colour);
+    Paddle(float x, float y, float width, float height, sf::Color colour);
     
     void move(utils::Direction dir, float delta, float width, float height);
     void update();

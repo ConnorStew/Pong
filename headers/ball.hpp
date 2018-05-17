@@ -9,7 +9,7 @@ class Ball {
     Ball(float x, float y, sf::Color colour);
     void update(float delta);
     sf::RectangleShape& getShape();
-    void bounce(utils::Direction dir);
+    void bounce(utils::Direction dir, float xModifier, float yModifier);
 
     private:
     sf::RectangleShape* shape;

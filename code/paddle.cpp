@@ -1,12 +1,12 @@
 #include "paddle.hpp"
 #include "SFML/Graphics.hpp"
 
-Paddle::Paddle(float x, float y, sf::Color colour) {
+Paddle::Paddle(float x, float y, float width, float height, sf::Color colour) {
     this->x = x;
     this->y = y;
     this->speed = 0.5;
 
-    shape = new sf::RectangleShape(sf::Vector2f(20,100));
+    shape = new sf::RectangleShape(sf::Vector2f(width, height));
     shape->setPosition(x,y);
     shape->setFillColor(colour);
 }

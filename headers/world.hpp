@@ -12,6 +12,10 @@ class World {
     private:
     sf::RenderWindow* win;
     sf::Clock* deltaClock;
+    sf::RectangleShape* topWall;
+    sf::RectangleShape* bottomWall;
+    sf::RectangleShape* leftWall;
+    sf::RectangleShape* rightWall;
     Paddle* pad1;
     Paddle* pad2;
     Ball* ball;

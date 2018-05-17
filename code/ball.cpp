@@ -7,7 +7,7 @@ static const float DRAG = 0.0000005;
 Ball::Ball(float x, float y, sf::Color colour) {
     this->x = x;
     this->y = y;
-    this->xDelta = 0.2;
+    this->xDelta = 0.7;
     this->yDelta = 0;
 
     shape = new sf::RectangleShape(sf::Vector2f(10,10));
@@ -38,7 +38,10 @@ sf::RectangleShape& Ball::getShape() {
     return *shape;
 }
 
-void Ball::bounce(utils::Direction dir) {
+void Ball::bounce(utils::Direction dir, float xModifier, float yModifier) {
+    xDelta = xDelta + xModifier;
+    yDelta = yDelta + yModifier;
+
     if (dir == utils::Direction::LEFT || dir == utils::Direction::RIGHT)
         xDelta = -xDelta;
 
