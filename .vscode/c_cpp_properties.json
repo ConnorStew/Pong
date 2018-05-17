@@ -1,0 +1,31 @@
+{
+    "configurations": [
+        {
+            "name": "MinGW",
+            "compilerPath": "E:\\Programs\\MinGW\\bin\\gcc.exe",
+            "includePath": [
+                "${workspaceFolder}",
+                "E:\\Programs\\MinGW",
+                "E:\\Programs\\C++_Workspace\\libs\\SFML\\include",
+                "E:\\Programs\\C++_Workspace\\libs\\SFML\\lib",
+                "${workspaceFolder}\\headers"
+            ],
+            "defines": [],
+            "browse": {
+                "path": [
+                    "${workspaceFolder}",
+                    "E:\\Programs\\MinGW",
+                    "E:\\Programs\\C++_Workspace\\libs\\SFML\\include",
+                    "E:\\Programs\\C++_Workspace\\libs\\SFML\\lib",
+                    "${workspaceFolder}\\headers"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            },
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 3
+}
