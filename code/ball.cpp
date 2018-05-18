@@ -2,7 +2,7 @@
 #include "world.hpp"
 #include "SFML/Graphics.hpp"
 
-static const float DRAG = 0.0000005;
+static const float DRAG = 0.000005;
 
 Ball::Ball(float x, float y, sf::Color colour) {
     this->x = x;
@@ -38,13 +38,13 @@ sf::RectangleShape& Ball::getShape() {
     return *shape;
 }
 
-void Ball::bounce(utils::Direction dir, float xModifier, float yModifier) {
+void Ball::bounce(Direction dir, float xModifier, float yModifier) {
     xDelta = xDelta + xModifier;
     yDelta = yDelta + yModifier;
 
-    if (dir == utils::Direction::LEFT || dir == utils::Direction::RIGHT)
+    if (dir == Direction::LEFT || dir == Direction::RIGHT)
         xDelta = -xDelta;
 
-    if (dir == utils::Direction::UP || dir == utils::Direction::DOWN)
+    if (dir == Direction::UP || dir == Direction::DOWN)
         yDelta = -yDelta;
 }

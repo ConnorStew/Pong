@@ -32,6 +32,7 @@
             "command": "g++",
             "args": [
                 "-g",
+                "-std=c++11",
                 "${workspaceFolder}\\code\\*.cpp",
                 "-o",
                 "${workspaceFolder}\\out\\main.exe",

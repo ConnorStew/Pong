@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #include <iostream>
 #include "world.hpp"
-#include "utils.hpp"
+#include "direction.hpp"
 #include "SFML/Graphics.hpp"
 
 World::World(sf::RenderWindow* win) {
@@ -55,19 +55,19 @@ void World::render() {
         }
 
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-            pad1->move(utils::UP, delta, win->getSize().x, win->getSize().y);
+            pad1->move(Direction::UP, delta, win->getSize().x, win->getSize().y);
         }
 
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-            pad1->move(utils::DOWN, delta, win->getSize().x, win->getSize().y);
+            pad1->move(Direction::DOWN, delta, win->getSize().x, win->getSize().y);
         }
 
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-            pad2->move(utils::UP, delta, win->getSize().x, win->getSize().y);
+            pad2->move(Direction::UP, delta, win->getSize().x, win->getSize().y);
         }
 
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-            pad2->move(utils::DOWN, delta, win->getSize().x, win->getSize().y);
+            pad2->move(Direction::DOWN, delta, win->getSize().x, win->getSize().y);
         }
 
         checkCollisions();
@@ -103,7 +103,7 @@ void World::checkCollisions() {
             float yDistance = ballCenterY - paddleCenterY; //y away from ceneter of paddle
             float yModifier = yDistance / 100;
 
-            ball->bounce(utils::RIGHT, 0, yModifier);
+            ball->bounce(Direction::RIGHT, 0, yModifier);
         }
     }
 
@@ -114,16 +114,16 @@ void World::checkCollisions() {
             float yDistance = ballCenterY - paddleCenterY; //y away from ceneter of paddle
             float yModifier = yDistance / 1000;
 
-            ball->bounce(utils::LEFT, 0, yModifier);
+            ball->bounce(Direction::LEFT, 0, yModifier);
         }
     }
 
     if (bb.intersects(bottomWall->getGlobalBounds()) || bb.intersects(topWall->getGlobalBounds())) {
-        ball->bounce(utils::UP, 0, 0);
+        ball->bounce(Direction::UP, 0, 0);
     }
 
     if (bb.intersects(leftWall->getGlobalBounds()) || bb.intersects(rightWall->getGlobalBounds())) {
-        ball->bounce(utils::LEFT, 0, 0);
+        ball->bounce(Direction::LEFT, 0, 0);
     }
 
 }
