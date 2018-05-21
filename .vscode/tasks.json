@@ -6,6 +6,11 @@
     "tasks": [
         {
             "label": "Run",
+            "windows": {
+                "options": {
+                    "cwd": "${workspaceFolder}\\out"
+                }
+            },
             "command": "${workspaceFolder}\\out\\main.exe",
             "type": "process",
             "presentation": {

@@ -1,7 +1,8 @@
 #ifndef BALL_H
 #define BALL_H
 
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
 #include "entity.hpp"
 #include "direction.hpp"
 
@@ -13,6 +14,8 @@ class Ball : public Entity {
 
     private:
     float xDelta, yDelta;
+    sf::SoundBuffer buffer;
+    sf::Sound sound;
 };
     
 #endif

@@ -1,7 +1,7 @@
 #ifndef PADDLE_H
 #define PADDLE_H
 
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
 #include "entity.hpp"
 #include "direction.hpp"
 

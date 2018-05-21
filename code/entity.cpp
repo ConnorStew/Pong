@@ -6,7 +6,7 @@ Entity::Entity(float x, float y, float width, float height, sf::Color colour) {
     this->x = x;
     this->y = y;
 
-    debugFont.loadFromFile("E:/Programs/C++_Workspace/SFMLPong/out/res/debug.ttf");
+    debugFont.loadFromFile("res/debug.ttf");
     debugText = sf::Text();
     debugText.setFont(debugFont);
     debugText.setCharacterSize(10);
@@ -52,6 +52,18 @@ void Entity::drawDebug(sf::RenderWindow* win) {
     debugText.setFillColor(sf::Color::Magenta);
     debugText.setString(std::string(std::to_string((int)(shape->getGlobalBounds().width))));
     debugText.setPosition(sf::Vector2f(shape->getPosition().x - (this->debugText.getGlobalBounds().width / 2) + 10, 20 + (shape->getPosition().y + shape->getGlobalBounds().height) - debugText.getCharacterSize() / 2));
+    win->draw(debugText);
+
+    //x text
+    debugText.setFillColor(sf::Color::Magenta);
+    debugText.setString(std::string(std::to_string((int)(shape->getPosition().x))));
+    debugText.setPosition(sf::Vector2f(shape->getPosition().x - (this->debugText.getGlobalBounds().width / 2) + 10, shape->getPosition().y - 20));
+    win->draw(debugText);
+
+    //y text
+    debugText.setFillColor(sf::Color::Magenta);
+    debugText.setString(std::string(std::to_string((int)(shape->getPosition().y))));
+    debugText.setPosition(sf::Vector2f(shape->getPosition().x + shape->getGlobalBounds().width + 10, (shape->getPosition().y + shape->getGlobalBounds().height / 2) - debugText.getCharacterSize() / 2));
     win->draw(debugText);
     
     //origin block

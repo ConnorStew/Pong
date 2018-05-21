@@ -17,9 +17,9 @@ World::World(sf::RenderWindow* win) {
     this->win = win;
     this->deltaClock = new sf::Clock();
 
-    this->pad1 = new Paddle(DISTANCE_FROM_WALLS, DISTANCE_FROM_ROOF, PADDLE_WIDTH, PADDLE_HEIGHT, sf::Color(20,20,20));
-    this->pad2 = new Paddle(WINDOW_WIDTH - (DISTANCE_FROM_WALLS * 2), DISTANCE_FROM_WALLS, PADDLE_WIDTH, PADDLE_HEIGHT, sf::Color(20,20,20));
-    this->ball = new Ball(100, 100, sf::Color::Blue);
+    this->pad1 = new Paddle(DISTANCE_FROM_WALLS, DISTANCE_FROM_ROOF, PADDLE_WIDTH, PADDLE_HEIGHT, sf::Color(250,20,20));
+    this->pad2 = new Paddle(WINDOW_WIDTH - (DISTANCE_FROM_WALLS * 2), DISTANCE_FROM_WALLS, PADDLE_WIDTH, PADDLE_HEIGHT, sf::Color(250,20,20));
+    this->ball = new Ball(100, 300, sf::Color::Blue);
 
     this->bottomWall = new sf::RectangleShape(sf::Vector2f(WINDOW_WIDTH, WALL_WIDTH));
     bottomWall->setPosition(0, WINDOW_HEIGHT - bottomWall->getSize().y);
@@ -83,9 +83,9 @@ void World::render() {
         win->draw(pad1->getShape());
         win->draw(pad2->getShape());
         win->draw(ball->getShape());
-        pad1->drawDebug(win);
-        pad2->drawDebug(win);
-        ball->drawDebug(win);
+        //pad1->drawDebug(win);
+        //pad2->drawDebug(win);
+        //ball->drawDebug(win);
         win->display();
     }
 
@@ -117,6 +117,10 @@ void World::checkCollisions() {
 
 void World::paddleCheck(sf::FloatRect paddleRect, sf::FloatRect ballRect) {
     if (paddleRect.intersects(ballRect)) {
-        std::cout << "Collision Occured!" << std::endl;
+        float centerY = paddleRect.top + paddleRect.height / 2;
+        float distance = (ballRect.top + ballRect.height / 2) - centerY;
+
+        //y distance from center of paddle
+        ball->bounce(Direction::LEFT, 0, distance / 1000);
     }
 }
