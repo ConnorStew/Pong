@@ -1,19 +1,21 @@
 #ifndef BALL_H
 #define BALL_H
 
-#include <iostream>
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
+#include "entity.hpp"
+#include "direction.hpp"
 
-class Ball {
+class Ball : public Entity {
     public:
     Ball(float x, float y, sf::Color colour);
     void update(float delta);
-    sf::CircleShape& getShape();
-    void bounce();
+    void bounce(Direction dir, float xModifier, float yModifier);
 
     private:
-    sf::CircleShape* shape;
-    float x, y, xDelta, yDelta;
+    float xDelta, yDelta;
+    sf::SoundBuffer buffer;
+    sf::Sound sound;
 };
     
 #endif

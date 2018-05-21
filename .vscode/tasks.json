@@ -2,17 +2,22 @@
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
     "version": "2.0.0",
-    
+
     "tasks": [
         {
             "label": "Run",
+            "windows": {
+                "options": {
+                    "cwd": "${workspaceFolder}\\out"
+                }
+            },
             "command": "${workspaceFolder}\\out\\main.exe",
-            "type": "shell",
+            "type": "process",
             "presentation": {
                 "echo": true,
                 "reveal": "always",
-                "focus": false,
-                "panel": "shared"
+                "focus": true,
+                "panel": "new",
             },
             "group": {
                 "kind": "build",
@@ -32,6 +37,7 @@
             "command": "g++",
             "args": [
                 "-g",
+                "-std=c++11",
                 "${workspaceFolder}\\code\\*.cpp",
                 "-o",
                 "${workspaceFolder}\\out\\main.exe",
@@ -43,7 +49,6 @@
                 "-lsfml-audio",
                 "-lsfml-network",
                 "-lsfml-system"
-                
             ],
             "presentation": {
                 "echo": true,
