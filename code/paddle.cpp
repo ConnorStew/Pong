@@ -1,14 +1,12 @@
 #include "paddle.hpp"
+#include "SFML/Graphics/font.hpp"
 #include "SFML/Graphics.hpp"
+#include "entity.hpp"
+#include <cmath>
+#include <iostream>
 
-Paddle::Paddle(float x, float y, float width, float height, sf::Color colour) {
-    this->x = x;
-    this->y = y;
-    this->speed = 0.5;
-
-    shape = new sf::RectangleShape(sf::Vector2f(width, height));
-    shape->setPosition(x,y);
-    shape->setFillColor(colour);
+Paddle::Paddle(float x, float y, float width, float height, sf::Color colour) : Entity::Entity(x, y, width, height, colour) {
+    speed = 0.5;
 }
 
 void Paddle::move(Direction dir, float delta, float width, float height) {
@@ -25,10 +23,6 @@ void Paddle::move(Direction dir, float delta, float width, float height) {
     }
 }
 
-void Paddle::update() {
+void Paddle::update(float delta) {
     shape->setPosition(x,y);
-}
-
-sf::RectangleShape& Paddle::getShape() {
-    return *shape;
 }

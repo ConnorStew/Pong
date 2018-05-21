@@ -2,10 +2,11 @@
 #include <iostream>
 #include "world.hpp"
 #include "direction.hpp"
+#include "entity.hpp"
 #include "SFML/Graphics.hpp"
 
 World::World(sf::RenderWindow* win) {
-    const float DISTANCE_FROM_WALLS = 40;
+    const float DISTANCE_FROM_WALLS = 80;
     const float DISTANCE_FROM_ROOF = 20;
     const float PADDLE_WIDTH = 20;
     const float PADDLE_HEIGHT = 100;
@@ -16,8 +17,8 @@ World::World(sf::RenderWindow* win) {
     this->win = win;
     this->deltaClock = new sf::Clock();
 
-    this->pad1 = new Paddle(DISTANCE_FROM_WALLS, DISTANCE_FROM_ROOF, PADDLE_WIDTH, PADDLE_HEIGHT, sf::Color::Green);
-    this->pad2 = new Paddle(WINDOW_WIDTH - (DISTANCE_FROM_WALLS * 2), DISTANCE_FROM_WALLS, PADDLE_WIDTH, PADDLE_HEIGHT, sf::Color::Red);
+    this->pad1 = new Paddle(DISTANCE_FROM_WALLS, DISTANCE_FROM_ROOF, PADDLE_WIDTH, PADDLE_HEIGHT, sf::Color(20,20,20));
+    this->pad2 = new Paddle(WINDOW_WIDTH - (DISTANCE_FROM_WALLS * 2), DISTANCE_FROM_WALLS, PADDLE_WIDTH, PADDLE_HEIGHT, sf::Color(20,20,20));
     this->ball = new Ball(100, 100, sf::Color::Blue);
 
     this->bottomWall = new sf::RectangleShape(sf::Vector2f(WINDOW_WIDTH, WALL_WIDTH));
@@ -44,8 +45,8 @@ void World::render() {
         sf::Int32 deltaInt = deltaClock->restart().asMicroseconds();
         float delta = (float)deltaInt / 1000;
 
-        pad1->update();
-        pad2->update();
+        pad1->update(delta);
+        pad2->update(delta);
         ball->update(delta);
 
         sf::Event event;
@@ -72,14 +73,19 @@ void World::render() {
 
         checkCollisions();
 
+
+
         win->clear();
-        win->draw(pad1->getShape());
-        win->draw(pad2->getShape());
-        win->draw(ball->getShape());
         win->draw(*topWall);
         win->draw(*bottomWall);
         win->draw(*leftWall);
         win->draw(*rightWall);
+        win->draw(pad1->getShape());
+        win->draw(pad2->getShape());
+        win->draw(ball->getShape());
+        pad1->drawDebug(win);
+        pad2->drawDebug(win);
+        ball->drawDebug(win);
         win->display();
     }
 
@@ -95,28 +101,9 @@ void World::checkCollisions() {
     sf::RectangleShape p1Rect = pad1->getShape();
     sf::RectangleShape p2Rect = pad2->getShape();
     sf::FloatRect bb = circle.getGlobalBounds();
-  
-    if(p1Rect.getGlobalBounds().intersects(bb)) {
-        if (!(bb.left > (p2Rect.getGlobalBounds().left + p2Rect.getGlobalBounds().width) - 1)) { 
-            float ballCenterY = bb.top + (bb.height / 2);
-            float paddleCenterY = p2Rect.getGlobalBounds().top + (p2Rect.getGlobalBounds().height / 2);
-            float yDistance = ballCenterY - paddleCenterY; //y away from ceneter of paddle
-            float yModifier = yDistance / 100;
 
-            ball->bounce(Direction::RIGHT, 0, yModifier);
-        }
-    }
-
-    if(p2Rect.getGlobalBounds().intersects(bb)) {
-        if (!(bb.left + bb.width > p2Rect.getGlobalBounds().left + 1)) {
-            float ballCenterY = bb.top + (bb.height / 2);
-            float paddleCenterY = p2Rect.getGlobalBounds().top + (p2Rect.getGlobalBounds().height / 2);
-            float yDistance = ballCenterY - paddleCenterY; //y away from ceneter of paddle
-            float yModifier = yDistance / 1000;
-
-            ball->bounce(Direction::LEFT, 0, yModifier);
-        }
-    }
+    paddleCheck(p1Rect.getGlobalBounds(), bb);
+    paddleCheck(p2Rect.getGlobalBounds(), bb);
 
     if (bb.intersects(bottomWall->getGlobalBounds()) || bb.intersects(topWall->getGlobalBounds())) {
         ball->bounce(Direction::UP, 0, 0);
@@ -128,6 +115,8 @@ void World::checkCollisions() {
 
 }
 
-float World::clip(float number, float lowest, float highest) {
-    return std::max(lowest, std::min(number, highest));
+void World::paddleCheck(sf::FloatRect paddleRect, sf::FloatRect ballRect) {
+    if (paddleRect.intersects(ballRect)) {
+        std::cout << "Collision Occured!" << std::endl;
+    }
 }

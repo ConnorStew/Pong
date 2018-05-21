@@ -2,18 +2,17 @@
 #define BALL_H
 
 #include <SFML/Graphics.hpp>
+#include "entity.hpp"
 #include "direction.hpp"
 
-class Ball {
+class Ball : public Entity {
     public:
     Ball(float x, float y, sf::Color colour);
     void update(float delta);
-    sf::RectangleShape& getShape();
     void bounce(Direction dir, float xModifier, float yModifier);
 
     private:
-    sf::RectangleShape* shape;
-    float x, y, xDelta, yDelta;
+    float xDelta, yDelta;
 };
     
 #endif

@@ -22,6 +22,7 @@ class World {
 
     void close();
     void checkCollisions();
+    void paddleCheck(sf::FloatRect paddleRect, sf::FloatRect ballRect);
     float clip(float number, float lowest, float highest);
 };
     
