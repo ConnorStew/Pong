@@ -6,16 +6,19 @@
 #include "entity.hpp"
 #include "direction.hpp"
 
+class World;
+
 class Ball : public Entity {
     public:
-    Ball(float x, float y, sf::Color colour);
-    void update(float delta);
+    Ball(World *world, float x, float y, sf::Color colour);
+    void update(double delta);
     void bounce(Direction dir, float xModifier, float yModifier);
 
     private:
     float xDelta, yDelta;
     sf::SoundBuffer buffer;
     sf::Sound sound;
+    World *world;
 };
     
 #endif

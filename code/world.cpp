@@ -2,6 +2,7 @@
 #include <iostream>
 #include "world.hpp"
 #include "direction.hpp"
+#include "paddle.hpp"
 #include "entity.hpp"
 #include "SFML/Graphics.hpp"
 
@@ -15,85 +16,152 @@ World::World(sf::RenderWindow* win) {
     const float WALL_WIDTH = 10;
 
     this->win = win;
-    this->deltaClock = new sf::Clock();
+    this->deltaClock = sf::Clock();
 
-    this->pad1 = new Paddle(DISTANCE_FROM_WALLS, DISTANCE_FROM_ROOF, PADDLE_WIDTH, PADDLE_HEIGHT, sf::Color(250,20,20));
-    this->pad2 = new Paddle(WINDOW_WIDTH - (DISTANCE_FROM_WALLS * 2), DISTANCE_FROM_WALLS, PADDLE_WIDTH, PADDLE_HEIGHT, sf::Color(250,20,20));
-    this->ball = new Ball(100, 300, sf::Color::Blue);
+    this->pad1 = new Paddle(this, DISTANCE_FROM_WALLS, DISTANCE_FROM_ROOF, PADDLE_WIDTH, PADDLE_HEIGHT, sf::Color::White);
+    this->pad2 = new Paddle(this, WINDOW_WIDTH - DISTANCE_FROM_WALLS - PADDLE_WIDTH, DISTANCE_FROM_ROOF, PADDLE_WIDTH, PADDLE_HEIGHT, sf::Color::White);
+    this->ball = new Ball(this, 120, 300, sf::Color::White);
 
     this->bottomWall = new sf::RectangleShape(sf::Vector2f(WINDOW_WIDTH, WALL_WIDTH));
     bottomWall->setPosition(0, WINDOW_HEIGHT - bottomWall->getSize().y);
-    bottomWall->setFillColor(sf::Color::Yellow);
+    bottomWall->setFillColor(sf::Color::White);
 
     this->topWall = new sf::RectangleShape(sf::Vector2f(WINDOW_WIDTH, WALL_WIDTH));
-    topWall->setFillColor(sf::Color::Magenta);
+    topWall->setFillColor(sf::Color::White);
 
     this->leftWall = new sf::RectangleShape(sf::Vector2f(WALL_WIDTH, WINDOW_HEIGHT - WALL_WIDTH * 2));
-    leftWall->setFillColor(sf::Color::Cyan);
+    leftWall->setFillColor(sf::Color::White);
     leftWall->setPosition(0, WALL_WIDTH);
 
-    this->rightWall = new sf::RectangleShape(sf::Vector2f(WALL_WIDTH, WINDOW_HEIGHT - WALL_WIDTH));
+    this->rightWall = new sf::RectangleShape(sf::Vector2f(WALL_WIDTH, WINDOW_HEIGHT - WALL_WIDTH * 2));
     rightWall->setPosition(WINDOW_WIDTH - rightWall->getSize().x, WALL_WIDTH);
-    rightWall->setFillColor(sf::Color::Green);
+    rightWall->setFillColor(sf::Color::White);
 
-    render();
-}
 
-void World::render() {
+    //https://gamedev.stackexchange.com/questions/72630/should-game-logic-update-per-second-or-per-frame
+    /*
+    float updatesPerSec = 10;
+    float skipTicks = updatesPerSec/1000;
+    float nextUpdate = deltaClock.getElapsedTime().asSeconds();
+    float currentTime = deltaClock.getElapsedTime().asSeconds();
+    
     while (win->isOpen()) {
-        //get time in microseconds then convert to milliseconds
-        sf::Int32 deltaInt = deltaClock->restart().asMicroseconds();
-        float delta = (float)deltaInt / 1000;
+        currentTime = deltaClock.getElapsedTime().asSeconds();
 
-        pad1->update(delta);
-        pad2->update(delta);
-        ball->update(delta);
-
-        sf::Event event;
-        while (win->pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                win->close();
+        while (nextUpdate < currentTime) {
+            update(skipTicks);
+            nextUpdate += skipTicks;
         }
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-            pad1->move(Direction::UP, delta, win->getSize().x, win->getSize().y);
-        }
-
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-            pad1->move(Direction::DOWN, delta, win->getSize().x, win->getSize().y);
-        }
-
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-            pad2->move(Direction::UP, delta, win->getSize().x, win->getSize().y);
-        }
-
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-            pad2->move(Direction::DOWN, delta, win->getSize().x, win->getSize().y);
-        }
-
-        checkCollisions();
-
-
-
-        win->clear();
-        win->draw(*topWall);
-        win->draw(*bottomWall);
-        win->draw(*leftWall);
-        win->draw(*rightWall);
-        win->draw(pad1->getShape());
-        win->draw(pad2->getShape());
-        win->draw(ball->getShape());
-        //pad1->drawDebug(win);
-        //pad2->drawDebug(win);
-        //ball->drawDebug(win);
-        win->display();
+        float interpolation = (currentTime + skipTicks - nextUpdate) / skipTicks;
+        std::cout << interpolation << std::endl;
+        render(interpolation);
     }
+    */
+
+    
+    //win->setVerticalSyncEnabled(true);
+
+    //https://gafferongames.com/post/fix_your_timestep/
+    //https://en.sfml-dev.org/forums/index.php?topic=21192.0
+    const double deltaTime = 0.01; //the amount of time between game logic updates (in seconds) (10ms)
+    double currentTime = deltaClock.getElapsedTime().asSeconds(); //get the current time 
+    double accumulator = 0.0;
+
+    while (win->isOpen()) {
+        //the time since the program started
+        double newTime = deltaClock.getElapsedTime().asSeconds();
+
+        //the amount of time that has passed since relative to the last frame that was rendered
+        double frameTime = newTime - currentTime;
+        currentTime = newTime;
+
+        //give the accumulator more time to do logic updates
+        accumulator += frameTime;
+
+        //update game logic until it has comsumed all time since the last frame
+        while (accumulator >= deltaTime) {
+            update(deltaTime);
+            accumulator -= deltaTime;
+        }
+        render();
+
+        // FPS - Shows in Console Window
+        std::cout << "FPS: " << 1.0f / frameTime << std::endl;
+    }
+    
 
     close();
 }
 
+void World::update(double delta) {
+    sf::Event event;
+    while (win->pollEvent(event)) {
+        if (event.type == sf::Event::Closed)
+            win->close();
+    }
+
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+        win->close();
+    }
+
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+        pad1->move(Direction::UP, delta);
+    }
+
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+        pad1->move(Direction::DOWN, delta);
+    }
+
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+        pad2->move(Direction::UP, delta);
+    }
+
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+        pad2->move(Direction::DOWN, delta);
+    }    
+
+    checkCollisions();
+
+    pad1->update(delta);
+    pad2->update(delta);
+    ball->update(delta);
+}
+
+void World::render() {
+    win->clear();
+    win->draw(*topWall);
+    win->draw(*bottomWall);
+    win->draw(*leftWall);
+    win->draw(*rightWall);
+    win->draw(pad1->getShape());
+    win->draw(pad2->getShape());
+    win->draw(ball->getShape());
+    //pad1->drawDebug(win);
+    //pad2->drawDebug(win);
+    //ball->drawDebug(win);
+    win->display();
+}
+
 void World::close() {
     delete this;
+}
+
+bool World::canMove(Entity* entity, float newX, float newY) {
+    sf::FloatRect leftWallRect = leftWall->getGlobalBounds();
+    sf::FloatRect rightWallRect = rightWall->getGlobalBounds();
+    sf::FloatRect topWallRect = topWall->getGlobalBounds();
+    sf::FloatRect bottomWallRect = bottomWall->getGlobalBounds();
+    
+    if (newX < leftWallRect.left + leftWallRect.width || //can't go lower than left wall
+        newX > rightWallRect.left - rightWallRect.width || //can't go higher than right wall
+        newY < topWallRect.top + topWallRect.height || //can't go higher than top wall
+        newY + entity->getShape().getGlobalBounds().height > bottomWallRect.top //can't go lower than bottom wall
+    ) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 void World::checkCollisions() {
@@ -121,6 +189,6 @@ void World::paddleCheck(sf::FloatRect paddleRect, sf::FloatRect ballRect) {
         float distance = (ballRect.top + ballRect.height / 2) - centerY;
 
         //y distance from center of paddle
-        ball->bounce(Direction::LEFT, 0, distance / 1000);
+        ball->bounce(Direction::LEFT, 0, distance / 100);
     }
 }

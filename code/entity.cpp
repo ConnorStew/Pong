@@ -17,19 +17,6 @@ Entity::Entity(float x, float y, float width, float height, sf::Color colour) {
 }
 
 void Entity::drawDebug(sf::RenderWindow* win) {
-    /*
-    debugText.setFillColor(sf::Color::Blue);
-    debugText.setPosition(shape->getPosition());
-    debugText.setString(std::string(std::to_string(shape->getPosition().x)));
-    win->draw(debugText);
-    
-
-    debugText.setFillColor(sf::Color::Red);
-    debugText.setPosition(shape->getPosition());
-    debugText.setString(std::string(std::to_string(shape->getPosition().y)));
-    win->draw(debugText);
-    */
-
     //height line
     sf::RectangleShape heightLine = sf::RectangleShape(sf::Vector2f(5,shape->getGlobalBounds().height));
     heightLine.setPosition(shape->getPosition());

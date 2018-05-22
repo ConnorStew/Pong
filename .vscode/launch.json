@@ -6,6 +6,9 @@
     "configurations": [
     {
         "name": "(gdb) Launch",
+        "windows": {
+            "cwd": "${workspaceFolder}/out/"
+        },
         "type": "cppdbg",
         "request": "launch",
         "program": "${workspaceFolder}/out/main.exe",
