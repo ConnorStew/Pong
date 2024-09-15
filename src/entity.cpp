@@ -1,6 +1,4 @@
-#define __USE_MINGW_ANSI_STDIO 0
-
-#include "entity.hpp"
+#include "../headers/entity.hpp"
 
 Entity::Entity(float x, float y, float width, float height, sf::Color colour) {
     this->x = x;

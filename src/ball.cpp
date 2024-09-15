@@ -1,5 +1,5 @@
-#include "ball.hpp"
-#include "entity.hpp"
+#include "../headers/ball.hpp"
+#include "../headers/entity.hpp"
 #include "SFML/Graphics.hpp"
 #include <iostream>
 

@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 #include <iostream>
-#include "world.hpp"
-#include "direction.hpp"
-#include "entity.hpp"
+#include "../headers/world.hpp"
+#include "../headers/direction.hpp"
+#include "../headers/entity.hpp"
 #include "SFML/Graphics.hpp"
 
 World::World(sf::RenderWindow* win) {
