@@ -9,7 +9,7 @@ Ball::Ball(float x, float y, sf::Color colour) : Entity::Entity(x, y, 10, 10, co
     this->xDelta = 0.45;
     this->yDelta = 0;
 
-    if (!buffer.loadFromFile("res/boop.wav")) {
+    if (!buffer.loadFromFile("res/pop.mp3")) {
         std::cout << "Failed to load sound file." << std::endl;
     }
 

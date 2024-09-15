@@ -19,24 +19,24 @@ World::World(sf::RenderWindow* win, bool drawDebug) {
     this->win = win;
     this->deltaClock = new sf::Clock();
 
-    this->pad1 = new Paddle(DISTANCE_FROM_WALLS, DISTANCE_FROM_ROOF, PADDLE_WIDTH, PADDLE_HEIGHT, sf::Color(250,20,20));
-    this->pad2 = new Paddle(WINDOW_WIDTH - (DISTANCE_FROM_WALLS * 2), DISTANCE_FROM_WALLS, PADDLE_WIDTH, PADDLE_HEIGHT, sf::Color(250,20,20));
-    this->ball = new Ball(100, 300, sf::Color::Blue);
+    this->pad1 = new Paddle(DISTANCE_FROM_WALLS, DISTANCE_FROM_ROOF, PADDLE_WIDTH, PADDLE_HEIGHT, sf::Color::White);
+    this->pad2 = new Paddle(WINDOW_WIDTH - (DISTANCE_FROM_WALLS * 2), DISTANCE_FROM_WALLS, PADDLE_WIDTH, PADDLE_HEIGHT, sf::Color::White);
+    this->ball = new Ball(100, 300, sf::Color::White);
 
     this->bottomWall = new sf::RectangleShape(sf::Vector2f(WINDOW_WIDTH, WALL_WIDTH));
     bottomWall->setPosition(0, WINDOW_HEIGHT - bottomWall->getSize().y);
-    bottomWall->setFillColor(sf::Color::Yellow);
+    bottomWall->setFillColor(sf::Color::White);
 
     this->topWall = new sf::RectangleShape(sf::Vector2f(WINDOW_WIDTH, WALL_WIDTH));
-    topWall->setFillColor(sf::Color::Magenta);
+    topWall->setFillColor(sf::Color::White);
 
     this->leftWall = new sf::RectangleShape(sf::Vector2f(WALL_WIDTH, WINDOW_HEIGHT - WALL_WIDTH * 2));
-    leftWall->setFillColor(sf::Color::Cyan);
+    leftWall->setFillColor(sf::Color::White);
     leftWall->setPosition(0, WALL_WIDTH);
 
     this->rightWall = new sf::RectangleShape(sf::Vector2f(WALL_WIDTH, WINDOW_HEIGHT - WALL_WIDTH));
     rightWall->setPosition(WINDOW_WIDTH - rightWall->getSize().x, WALL_WIDTH);
-    rightWall->setFillColor(sf::Color::Green);
+    rightWall->setFillColor(sf::Color::White);
 
     render();
 }
