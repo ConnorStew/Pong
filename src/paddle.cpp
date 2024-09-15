@@ -1,7 +1,6 @@
-#include "paddle.hpp"
-#include "SFML/Graphics/font.hpp"
-#include "SFML/Graphics.hpp"
-#include "entity.hpp"
+#include "../headers/paddle.hpp"
+#include "../headers/entity.hpp"
+#include <SFML/Graphics.hpp>
 #include <cmath>
 #include <iostream>
 

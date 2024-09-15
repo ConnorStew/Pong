@@ -1,9 +1,9 @@
 # Pong
+![pong screenshot](./images/pong.png)
 
-
-## Install debian.
+## Build
 ```
-apt install sfml
+cmake -B build
+cmake --build build
+./build/bin/pong
 ```
-
-I want learn C++, I thought the best way to start was to create pong! Im using the SFML library for display.

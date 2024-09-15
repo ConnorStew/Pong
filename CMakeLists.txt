@@ -13,8 +13,12 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(main src/main.cpp)
-target_link_libraries(main PRIVATE sfml-graphics)
+file(GLOB SOURCES "src/*.cpp")
+add_executable(main ${SOURCES})
+
+set_target_properties(main PROPERTIES OUTPUT_NAME "pong")
+
+target_link_libraries(main PRIVATE sfml-graphics sfml-audio)
 target_compile_features(main PRIVATE cxx_std_17)
 
 if(WIN32)

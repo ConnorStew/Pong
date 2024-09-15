@@ -1,6 +1,6 @@
 #include "../headers/ball.hpp"
 #include "../headers/entity.hpp"
-#include "SFML/Graphics.hpp"
+#include <SFML/Graphics.hpp>
 #include <iostream>
 
 const float MAX_Y_DELTA = 1;
