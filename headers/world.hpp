@@ -7,9 +7,10 @@
 
 class World {
     public:
-    World(sf::RenderWindow* win);
+    World(sf::RenderWindow* win, bool drawDebug);
     void render();
     private:
+    bool drawDebug;
     sf::RenderWindow* win;
     sf::Clock* deltaClock;
     sf::RectangleShape* topWall;

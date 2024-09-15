@@ -21,6 +21,12 @@ set_target_properties(main PROPERTIES OUTPUT_NAME "pong")
 target_link_libraries(main PRIVATE sfml-graphics sfml-audio)
 target_compile_features(main PRIVATE cxx_std_17)
 
+add_custom_command(
+    TARGET main POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:main>/res
+)
+
 if(WIN32)
     add_custom_command(
         TARGET main

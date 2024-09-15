@@ -4,7 +4,7 @@ Entity::Entity(float x, float y, float width, float height, sf::Color colour) {
     this->x = x;
     this->y = y;
 
-    debugFont.loadFromFile("res/debug.ttf");
+    debugFont.loadFromFile("res/Inconsolata-Regular.ttf");
     debugText = sf::Text();
     debugText.setFont(debugFont);
     debugText.setCharacterSize(10);
@@ -15,7 +15,6 @@ Entity::Entity(float x, float y, float width, float height, sf::Color colour) {
 }
 
 void Entity::drawDebug(sf::RenderWindow* win) {
-    /*
     debugText.setFillColor(sf::Color::Blue);
     debugText.setPosition(shape->getPosition());
     debugText.setString(std::string(std::to_string(shape->getPosition().x)));
@@ -26,7 +25,6 @@ void Entity::drawDebug(sf::RenderWindow* win) {
     debugText.setPosition(shape->getPosition());
     debugText.setString(std::string(std::to_string(shape->getPosition().y)));
     win->draw(debugText);
-    */
 
     //height line
     sf::RectangleShape heightLine = sf::RectangleShape(sf::Vector2f(5,shape->getGlobalBounds().height));

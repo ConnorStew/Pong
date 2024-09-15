@@ -1,11 +1,11 @@
 #include <bits/stdc++.h>
 #include <iostream>
+#include <SFML/Graphics.hpp>
 #include "../headers/world.hpp"
 #include "../headers/direction.hpp"
 #include "../headers/entity.hpp"
-#include "SFML/Graphics.hpp"
 
-World::World(sf::RenderWindow* win) {
+World::World(sf::RenderWindow* win, bool drawDebug) {
     const float DISTANCE_FROM_WALLS = 80;
     const float DISTANCE_FROM_ROOF = 20;
     const float PADDLE_WIDTH = 20;
@@ -13,6 +13,8 @@ World::World(sf::RenderWindow* win) {
     const float WINDOW_WIDTH = win->getSize().x;
     const float WINDOW_HEIGHT = win->getSize().y;
     const float WALL_WIDTH = 10;
+
+    this->drawDebug = drawDebug;
 
     this->win = win;
     this->deltaClock = new sf::Clock();
@@ -41,7 +43,7 @@ World::World(sf::RenderWindow* win) {
 
 void World::render() {
     while (win->isOpen()) {
-        //get time in microseconds then convert to milliseconds
+        // Get time in microseconds then convert to milliseconds.
         sf::Int32 deltaInt = deltaClock->restart().asMicroseconds();
         float delta = (float)deltaInt / 1000;
 
@@ -73,19 +75,22 @@ void World::render() {
 
         checkCollisions();
 
-
-
         win->clear();
         win->draw(*topWall);
         win->draw(*bottomWall);
         win->draw(*leftWall);
         win->draw(*rightWall);
+
+        if (drawDebug == true) {
+            pad1->drawDebug(win);
+            pad2->drawDebug(win);
+            ball->drawDebug(win);
+        }
+
         win->draw(pad1->getShape());
         win->draw(pad2->getShape());
         win->draw(ball->getShape());
-        //pad1->drawDebug(win);
-        //pad2->drawDebug(win);
-        //ball->drawDebug(win);
+
         win->display();
     }
 
